@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Editora;
+use App\Models\Livro;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +16,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $editora1 = Editora::create(['nome' => 'Editora A']);
+        $editora2 = Editora::create(['nome' => 'Editora B']);
+
+        Livro::create([
+            'isbn' => '978-3-16-148410-0',
+            'nome' => 'Livro 1',
+            'editora_id' => $editora1->id,
+            'preco' => 49.90
+        ]);
+
+        Livro::create([
+            'isbn' => '978-1-23-456789-7',
+            'nome' => 'Livro 2',
+            'editora_id' => $editora2->id,
+            'preco' => 39.90
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',
