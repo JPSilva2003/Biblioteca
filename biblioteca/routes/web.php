@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/livros', [LivroController::class, 'index'])->name('livros');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

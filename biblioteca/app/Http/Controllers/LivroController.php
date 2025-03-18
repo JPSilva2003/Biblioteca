@@ -24,7 +24,7 @@ class LivroController extends Controller
     public function store(Request $request)
     {
         Livro::create($request->all());
-        return redirect()->route('livros.index');
+        return redirect()->route('livros');
     }
 
     public function edit(Livro $livro)
@@ -36,12 +36,15 @@ class LivroController extends Controller
     public function update(Request $request, Livro $livro)
     {
         $livro->update($request->all());
-        return redirect()->route('livros.index');
+        return redirect()->route('livros');
     }
 
-    public function destroy(Livro $livro)
+    public function destroy($id)
     {
+        $livro = Livro::findOrFail($id);
         $livro->delete();
-        return redirect()->route('livros.index');
+
+        return redirect()->route('livros')->with('success', '📖 Livro excluído com sucesso!');
     }
+
 }
