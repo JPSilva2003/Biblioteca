@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-center">
         <div class="card shadow-lg w-50">
             <div class="card-body">
-                <form action="{{ route('livros.store') }}" method="POST">
+                <form action="{{ route('livros.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold">📖 ISBN</label>
@@ -22,6 +22,16 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">📌 Nome</label>
                         <input type="text" name="nome" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">✍ Autor</label>
+                        <input type="text" name="autores" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">📜 Bibliografia</label>
+                        <textarea name="bibliografia" class="form-control" rows="3" required></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -36,6 +46,11 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">💲 Preço</label>
                         <input type="text" name="preco" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">🖼 Capa do Livro</label>
+                        <input type="file" name="imagem_capa" class="form-control">
                     </div>
 
                     <div class="d-flex justify-content-end">

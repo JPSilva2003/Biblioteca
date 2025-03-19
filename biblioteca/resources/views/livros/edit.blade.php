@@ -4,7 +4,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0 text-primary fw-bold">✏ Editar Livro</h1>
-        <a href="{{ route('livros.index') }}" class="btn btn-secondary">
+        <a href="{{ route('livros') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Voltar
         </a>
     </div>

@@ -23,8 +23,14 @@ class LivroController extends Controller
 
     public function store(Request $request)
     {
-        Livro::create($request->all());
-        return redirect()->route('livros');
+        $data = $request->all();
+
+        if ($request->hasFile('imagem_capa')) {
+            $data['imagem_capa'] = $request->file('imagem_capa')->store('capas', 'public');
+        }
+
+        Livro::create($data);
+        return redirect()->route('livros')->with('success', '📚 Livro adicionado com sucesso!');
     }
 
     public function edit(Livro $livro)
@@ -35,8 +41,14 @@ class LivroController extends Controller
 
     public function update(Request $request, Livro $livro)
     {
-        $livro->update($request->all());
-        return redirect()->route('livros');
+        $data = $request->all();
+
+        if ($request->hasFile('imagem_capa')) {
+            $data['imagem_capa'] = $request->file('imagem_capa')->store('capas', 'public');
+        }
+
+        $livro->update($data);
+        return redirect()->route('livros')->with('success', '📚 Livro atualizado com sucesso!');
     }
 
     public function destroy($id)
@@ -44,7 +56,7 @@ class LivroController extends Controller
         $livro = Livro::findOrFail($id);
         $livro->delete();
 
-        return redirect()->route('livros')->with('success', '📖 Livro excluído com sucesso!');
+        return redirect()->route('livros')->with('success', '📖 Livro removido com sucesso!');
     }
 
 }
