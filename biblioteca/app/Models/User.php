@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -64,4 +65,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function requisicoes(): HasMany
+    {
+        return $this->hasMany(Requisicao::class, 'user_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }

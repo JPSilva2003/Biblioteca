@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\AlertaLivroController;
 use App\Exports\LivrosExport;
 use Illuminate\Http\Request;
 use App\Models\Livro;
 use App\Models\Editora;
 use App\Models\Autor;
+
+
 class LivroController extends Controller
 {
     public function index(Request $request)
@@ -74,9 +78,25 @@ class LivroController extends Controller
 
     public function show($id)
     {
-        $livro = Livro::findOrFail($id);
-        return view('livros.show', compact('livro'));
+        $livro = Livro::with('editora', 'requisicoes.user')->findOrFail($id);
+        $requisicoes = $livro->requisicoes->sortByDesc('data_requisicao');
+
+        // Obter reviews ativas relacionadas a este livro
+        $reviews = \App\Models\Review::with('user')
+            ->where('estado', 'ativo')
+            ->whereHas('requisicao', function ($query) use ($id) {
+                $query->where('livro_id', $id);
+            })
+            ->latest()
+            ->get();
+
+        // Obter livros relacionados
+        $relacionados = $this->getLivrosRelacionados($livro);
+
+        // Enviar todas as variáveis para a view
+        return view('livros.show', compact('livro', 'requisicoes', 'reviews', 'relacionados'));
     }
+
 
     public function destroy($id)
     {
@@ -85,6 +105,33 @@ class LivroController extends Controller
 
         return redirect()->route('livros')->with('success', '📖 Livro removido com sucesso!');
     }
+
+
+    private function getLivrosRelacionados(Livro $livro)
+    {
+        $stopWords = ['de', 'do', 'da', 'e', 'a', 'o', 'os', 'as', 'que', 'em', 'por', 'para', 'com'];
+        $palavrasBase = collect(explode(' ', Str::lower(strip_tags($livro->bibliografia))))
+            ->filter(fn($palavra) => !in_array($palavra, $stopWords) && strlen($palavra) > 3)
+            ->unique()
+            ->toArray();
+
+        if (empty($palavrasBase)) {
+            return collect(); // Sem palavras relevantes
+        }
+
+        return Livro::where('id', '!=', $livro->id)
+            ->get()
+            ->map(function ($outroLivro) use ($palavrasBase) {
+                $descricao = Str::lower(strip_tags($outroLivro->bibliografia));
+                $count = collect($palavrasBase)->filter(fn($word) => Str::contains($descricao, $word))->count();
+                $outroLivro->relevancia = $count;
+                return $outroLivro;
+            })
+            ->filter(fn($livro) => $livro->relevancia > 0)
+            ->sortByDesc('relevancia')
+            ->take(4);
+    }
+
 
 
     public function export($id)

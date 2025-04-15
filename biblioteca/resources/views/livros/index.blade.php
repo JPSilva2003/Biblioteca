@@ -2,20 +2,19 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0 text-primary fw-bold">📚 Livros</h1>
+
+            @if(Auth::user()->role_id == 1) <!-- Apenas Administradores podem adicionar livros -->
             <a href="{{ route('livros.create') }}" class="btn btn-success btn-lg">
                 <i class="fas fa-plus"></i> Novo Livro
             </a>
+            @endif
         </div>
 
         <!-- Barra de Pesquisa e Filtros -->
         <form method="GET" action="{{ route('livros') }}" class="mb-4">
             <div class="d-flex justify-content-center gap-3">
-
-                <!-- Barra de Pesquisa -->
                 <input type="text" name="search" class="form-control shadow-sm w-50"
                        placeholder="🔍 Pesquisar por nome..." value="{{ request('search') }}">
-
-                <!-- Filtro de Editora -->
                 <select name="editora_id" class="form-select shadow-sm w-25" onchange="this.form.submit()">
                     <option value="">🏢 Todas as Editoras</option>
                     @foreach($editoras as $editora)
@@ -24,11 +23,8 @@
                     </option>
                     @endforeach
                 </select>
-
             </div>
         </form>
-
-
 
         <div class="table-container">
             <div class="card shadow-lg p-4">
@@ -37,14 +33,15 @@
                         <table class="table table-striped table-hover align-middle text-center center-table">
                             <thead class="table-dark">
                             <tr>
-                                <th class="largura-coluna">📖 ISBN</th>
-                                <th class="largura-coluna">📌 Nome</th>
-                                <th class="largura-coluna">✍ Autor</th>
-                                <th class="largura-coluna">🏢 Editora</th>
-                                <th class="largura-coluna">📜 Bibliografia</th>
-                                <th class="largura-coluna">🖼 Capa</th>
-                                <th class="largura-coluna">💲 Preço</th>
-                                <th class="largura-coluna">⚙ Ações</th>
+                                <th>📖 ISBN</th>
+                                <th>📌 Nome</th>
+                                <th>✍ Autor</th>
+                                <th>🏢 Editora</th>
+                                <th>📜 Bibliografia</th>
+                                <th>🖼 Capa</th>
+                                <th>💲 Preço</th>
+                                <th>✅ Disponibilidade</th>
+                                <th>⚙ Ações</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,8 +60,29 @@
                                     @endif
                                 </td>
                                 <td class="text-success fw-bold">EUR€ {{ number_format($livro->preco, 2, ',', '.') }}</td>
+
+                                <!-- Disponibilidade -->
+                                <td>
+                                    @if($livro->disponivel)
+                                    <span class="badge bg-success p-2">Disponível</span>
+                                    @else
+                                    <span class="badge bg-danger p-2">Indisponível</span>
+                                    @endif
+                                </td>
+
                                 <td>
                                     <div class="d-flex gap-2 justify-content-center">
+                                        <a href="{{ route('livros.show', $livro->id) }}" class="btn btn-info btn-sm btn-action">
+                                            <i class="fas fa-info-circle"></i> Detalhes
+                                        </a>
+
+                                        @if($livro->disponivel && Auth::user()->requisicoes()->count() < 3)
+                                        <a href="{{ route('requisicoes.create', $livro->id) }}" class="btn btn-primary btn-sm btn-action">
+                                            <i class="fas fa-book-reader"></i> Requisitar Livro
+                                        </a>
+                                        @endif
+
+                                        @if(Auth::user()->role_id == 1) <!-- Apenas Administradores podem Editar e Remover -->
                                         <a href="{{ route('livros.edit', $livro->id) }}" class="btn btn-warning btn-sm btn-action">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
@@ -75,8 +93,10 @@
                                                 <i class="fas fa-trash-alt"></i> Remover
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
+
                             </tr>
                             @endforeach
                             </tbody>
@@ -109,11 +129,6 @@
             font-size: 1.1rem;
         }
 
-        .largura-coluna {
-            width: 20%;
-            white-space: nowrap;
-        }
-
         .capa-livro {
             width: 70px;
             height: 70px;
@@ -132,6 +147,22 @@
 
         .btn-action:hover {
             transform: scale(1.05);
+        }
+
+        .badge {
+            font-size: 0.9rem;
+            padding: 0.5em 0.75em;
+            border-radius: 8px;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+            color: white;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+            color: white;
         }
     </style>
 </x-app-layout>

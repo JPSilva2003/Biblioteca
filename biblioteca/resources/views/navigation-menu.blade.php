@@ -34,6 +34,12 @@
                         {{ __('Editoras') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('requisicoes.index') }}" :active="request()->routeIs('requisicoes.index')">
+                        {{ __('Requisicoes') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -88,6 +94,18 @@
                         </x-dropdown>
                     </div>
                 @endif
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('cart.index') }}" :active="request()->routeIs('cart.index')">
+                        {{ __('🛒') }}
+                    </x-nav-link>
+                </div>
+
+                @if(auth()->user()->unreadNotifications->count() > 0)
+                <div class="alert alert-info d-flex justify-content-between align-items-center">
+                    <span></span>
+                    <a href="{{ route('reviews.user') }}" class="btn btn-primary btn-sm">🔔</a>
+                </div>
+                @endif
 
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
@@ -109,6 +127,8 @@
                                 </span>
                             @endif
                         </x-slot>
+
+
 
                         <x-slot name="content">
                             <!-- Account Management -->

@@ -51,37 +51,29 @@
         </header>
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-                <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
-                    <h1 class="mb-1 font-medium">Bem vindo</h1>
-                    <p class="mb-2 text-[#706f6c]"><br></p>
-                    <ul class="flex flex-col mb-4 lg:mb-6">
-                        <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
-                            <span class="relative py-1 bg-white">
-                                <span class="flex items-center justify-center rounded-full bg-[#FDFDFC] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border border-[#e3e3e0]">
-                                    <span class="rounded-full bg-[#dbdbd7] w-1.5 h-1.5"></span>
+                <div class="flex bg-white shadow-md rounded-lg overflow-hidden">
+                    <div class="w-1/2 p-10 flex flex-col justify-center text-center">
+                        <h1 class="mb-2 font-semibold text-xl text-[#333]">Bem-vindo à nossa biblioteca!</h1>
+                        <p class="mb-4 text-[#706f6c]">Explore nosso acervo e aproveite um ambiente acolhedor para leitura e estudo.</p>
+                        <ul class="flex flex-col items-start mx-auto space-y-2">
+                            <li class="flex items-center gap-2">
+                            <span class="w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center">
+                                <span class="w-2 h-2 bg-gray-600 rounded-full"></span>
+                            </span>
+                            <span class="text-[#333] text-sm">Grande acervo de livros</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center">
+                                    <span class="w-2 h-2 bg-gray-600 rounded-full"></span>
                                 </span>
-                            </span>
-                            <span>
-
-                            </span>
-                        </li>
-                        <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] before:bottom-1/2 before:top-0 before:left-[0.4rem] before:absolute">
-                            <span class="relative py-1 bg-white">
-                                <span class="flex items-center justify-center rounded-full bg-[#FDFDFC] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border border-[#e3e3e0]">
-                                    <span class="rounded-full bg-[#dbdbd7] w-1.5 h-1.5"></span>
-                                </span>
-                            </span>
-                            <span>
-
-
-                            </span>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="bg-[#fff2f2] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
+                                <span class="text-[#333] text-sm">Faça já a sua requisição</span>
+                            </li>
+                        </ul>
+                    </div>
+                <div class="bg-[#fff2f2] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden ">
                     {{-- Laravel Logo --}}
 
+                    <img src="{{ asset('storage/biblioteca.jpg') }}" alt="Bem-vindo à biblioteca" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-4 object-cover">
 
                     {{-- Light Mode 12 SVG --}}
 
